@@ -14,7 +14,10 @@ const Selectorslist = {
   genericField: ".oxd-input--active",
   dateField: "[placeholder='yyyy-dd-mm']",
   dateCloseButton: ".--close",
-  submitButton: "[type='submit']"
+  submitButton: "[type='submit']",
+  genericComboBox: ".oxd-select-text--arrow",
+  secondIconComboBox: ".oxd-select-dropdown > :nth-child(3)",
+  thirdIconComboBox: '.oxd-select-dropdown > :nth-child(2)',
 }
 
   it.only('User Info Update - sucess', () => {
@@ -30,11 +33,17 @@ const Selectorslist = {
     cy.get(Selectorslist.genericField).eq(3).clear().type('Employee')
     cy.get(Selectorslist.genericField).eq(4).clear().type('OtherIdTest')
     cy.get(Selectorslist.genericField).eq(5).clear().type('DriverlicenseTest')
-    cy.get(Selectorslist.genericField).eq(6).clear().type('20250223')
+    cy.get(Selectorslist.genericField).eq(6).clear().type('2025-02-23')
     cy.get(Selectorslist.dateCloseButton).click()
-    cy.get(Selectorslist.submitButton).eq(1).click()
+    cy.get(Selectorslist.submitButton).eq(1).click({force: true})
     cy.get('body').should('contain', 'Successfully Saved')
     cy.get('.oxd-toast-close')
+
+    cy.get(Selectorslist.genericComboBox).eq(0).click({force: true})
+    cy.get(Selectorslist.secondIconComboBox).click()
+    cy.get(Selectorslist.genericComboBox).eq(1).click({force: true})
+    cy.get(Selectorslist.thirdIconComboBox).click()
+
   })
   it('login - fail', () => {
     cy.visit('/auth/login')
