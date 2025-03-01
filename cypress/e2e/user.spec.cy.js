@@ -1,13 +1,15 @@
 import userData from '../fixtures/userData.json'
+import LoginPage from '../pages/loginPage.js'
+import DashboardPage from '../pages/dashboardPage.js'
+import MenuPage from '../pages/menuPage.js'
+
+const loginPage = new LoginPage()
+const dashboardPage = new DashboardPage()
+const menuPage = new MenuPage()
 
 describe('orage HRM tests', () => {
 
 const Selectorslist = {
-  usernameField: "[name='username']",
-  passwordField: "[name='password']",
-  LoginButton: "[type='submit']",
-  dashboardGrid: ".orangehrm-dashboard-grid",
-  wrongCredentialAlert: "[role='alert']",
   myInfoButton: "[href='/web/index.php/pim/viewMyDetails']",
   firstNameField: "[name='firstName']",
   lastNameField: "[name='lastName']",
@@ -21,13 +23,12 @@ const Selectorslist = {
 }
 
   it.only('User Info Update - sucess', () => {
-    cy.visit('/auth/login')
-    cy.get(Selectorslist.usernameField).type(userData.userSuccess.username)
-    cy.get(Selectorslist.passwordField).type(userData.userSuccess.password)
-    cy.get(Selectorslist.LoginButton).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(Selectorslist.dashboardGrid)
-    cy.get(Selectorslist.myInfoButton).click()
+    loginPage.accessLoginPage()
+    loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
+
+    dashboardPage.checkDashbordPage()
+    menuPage.acessMyinfo()
+
     cy.get(Selectorslist.firstNameField).type('FirstNameTest')
     cy.get(Selectorslist.lastNameField).type('LastNameTest')
     cy.get(Selectorslist.genericField).eq(3).clear().type('Employee')
